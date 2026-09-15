@@ -83,11 +83,11 @@ El sistema SHALL ofrecer una pantalla de registro y una de inicio de sesión, ca
 
 #### Scenario: Se impide ver login o registro con sesión activa
 - **WHEN** una persona con sesión activa intenta abrir la pantalla de login o la de registro
-- **THEN** es enviada automáticamente a la pantalla de perfil en su lugar
+- **THEN** es enviada automáticamente a la pantalla principal en su lugar
 
 #### Scenario: Entrada al sistema tras un registro o inicio de sesión correctos
 - **WHEN** el registro o el inicio de sesión terminan con éxito
-- **THEN** la persona es llevada automáticamente a la pantalla de perfil
+- **THEN** la persona es llevada automáticamente a la pantalla principal
 
 ### Requirement: Aviso de errores en los formularios de acceso
 El sistema SHALL mostrar en castellano y de forma comprensible cualquier error que impida completar el registro o el inicio de sesión, señalando el campo concreto siempre que el error corresponda a uno visible en el formulario.
@@ -117,7 +117,7 @@ El sistema SHALL impedir el acceso a páginas que requieren sesión a quien no l
 
 #### Scenario: Ruta desconocida
 - **WHEN** se visita una dirección de la aplicación que no corresponde a ninguna pantalla
-- **THEN** la persona termina en la pantalla de perfil si tiene sesión activa, o en la de inicio de sesión si no la tiene
+- **THEN** la persona termina en la pantalla principal si tiene sesión activa, o en la de inicio de sesión si no la tiene
 
 ### Requirement: Persistencia de la sesión entre recargas
 El sistema SHALL recordar la sesión de una persona tras recargar la página o volver a abrir la aplicación, siempre que el servidor siga reconociendo esa sesión como válida.

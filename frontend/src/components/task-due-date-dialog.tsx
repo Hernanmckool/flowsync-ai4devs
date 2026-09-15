@@ -91,7 +91,12 @@ export function TaskDueDateDialog({ task, token }: TaskDueDateDialogProps) {
       .finally(() => setIsSaving(false))
   }
 
-  const overdue = detail !== null && isOverdue(detail, new Date())
+  // Se calcula sobre `dueDate` (el estado local, ya actualizado de forma
+  // optimista por `applyDueDate`), no sobre `detail.dueDate`: si se usara
+  // este último, la insignia quedaría mostrando la condición anterior
+  // durante la ventana entre cambiar el campo y que el PATCH resuelva.
+  const overdue =
+    detail !== null && isOverdue({ dueDate, status: detail.status }, new Date())
   const fieldId = `due-date-${task.id}`
 
   return (

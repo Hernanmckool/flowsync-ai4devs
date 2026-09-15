@@ -46,6 +46,7 @@ const FIELD_LABELS: Record<string, string> = {
   passwordConfirmation: 'la confirmación de la contraseña',
   title: 'el título',
   dueDate: 'la fecha de vencimiento',
+  status: 'el estado',
 }
 
 const label = (field?: string) => FIELD_LABELS[field ?? ''] ?? 'el campo'
@@ -74,6 +75,10 @@ function translate(error: BackendError): string {
       return `${label(field)} no puede superar los ${meta?.max} caracteres.`
     case 'date':
       return 'Introduce una fecha válida.'
+    case 'enum':
+      // "Revisa ${label(field)}." valdría, pero aquí sí conviene explicar
+      // que el problema es el valor elegido, no el campo en sí.
+      return `El valor elegido para ${label(field)} no es válido.`
     default:
       return `Revisa ${label(field)}.`
   }
@@ -95,6 +100,12 @@ function toApiError(status: number, body: unknown): ApiError {
   // `User.verifyCredentials` lanza E_INVALID_CREDENTIALS con un 400 sin `field`.
   if (status === 400) {
     return new ApiError('El email o la contraseña no son correctos.', status)
+  }
+
+  // `Model.findOrFail` (p. ej. `GET/PATCH /tasks/:id` con un id inexistente)
+  // responde 404 sin el envoltorio `{ errors: [...] }` de VineJS.
+  if (status === 404) {
+    return new ApiError('Ese elemento ya no existe.', status)
   }
 
   if (status === 422 && errors?.length) {
