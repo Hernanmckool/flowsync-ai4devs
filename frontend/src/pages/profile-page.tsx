@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '@/auth/use-auth'
+import { AppNav } from '@/components/app-nav'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -28,46 +29,50 @@ export function ProfilePage() {
   }
 
   return (
-    <div className="bg-muted/40 flex min-h-svh items-center justify-center p-6">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <div className="flex items-center gap-4">
-            <div className="bg-primary text-primary-foreground flex size-12 shrink-0 items-center justify-center rounded-full text-lg font-medium">
-              {user.initials}
-            </div>
-            <div className="min-w-0">
-              <CardTitle className="truncate">
-                {user.fullName ?? 'Sin nombre'}
-              </CardTitle>
-              <CardDescription className="truncate">
-                {user.email}
-              </CardDescription>
-            </div>
-          </div>
-        </CardHeader>
+    <div className="bg-muted/40 min-h-svh">
+      <AppNav current="profile" />
 
-        <CardContent>
-          <dl className="grid gap-3 text-sm">
-            <div className="flex justify-between gap-4">
-              <dt className="text-muted-foreground">Miembro desde</dt>
-              <dd className="font-medium">
-                {dateFormatter.format(new Date(user.createdAt))}
-              </dd>
+      <main className="flex items-center justify-center p-6">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <div className="flex items-center gap-4">
+              <div className="bg-primary text-primary-foreground flex size-12 shrink-0 items-center justify-center rounded-full text-lg font-medium">
+                {user.initials}
+              </div>
+              <div className="min-w-0">
+                <CardTitle className="truncate">
+                  {user.fullName ?? 'Sin nombre'}
+                </CardTitle>
+                <CardDescription className="truncate">
+                  {user.email}
+                </CardDescription>
+              </div>
             </div>
-          </dl>
-        </CardContent>
+          </CardHeader>
 
-        <CardFooter>
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-          >
-            {isLoggingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}
-          </Button>
-        </CardFooter>
-      </Card>
+          <CardContent>
+            <dl className="grid gap-3 text-sm">
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Miembro desde</dt>
+                <dd className="font-medium">
+                  {dateFormatter.format(new Date(user.createdAt))}
+                </dd>
+              </div>
+            </dl>
+          </CardContent>
+
+          <CardFooter>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+            >
+              {isLoggingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}
+            </Button>
+          </CardFooter>
+        </Card>
+      </main>
     </div>
   )
 }

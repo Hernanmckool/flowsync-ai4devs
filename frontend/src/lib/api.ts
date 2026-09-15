@@ -1,4 +1,13 @@
-import type { AuthResult, LoginPayload, SignupPayload, User } from '@/lib/types'
+import type {
+  AuthResult,
+  CreateTaskPayload,
+  LoginPayload,
+  SignupPayload,
+  Task,
+  TaskDetail,
+  UpdateTaskPayload,
+  User,
+} from '@/lib/types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3333'
 
@@ -35,6 +44,8 @@ const FIELD_LABELS: Record<string, string> = {
   email: 'el email',
   password: 'la contraseña',
   passwordConfirmation: 'la confirmación de la contraseña',
+  title: 'el título',
+  dueDate: 'la fecha de vencimiento',
 }
 
 const label = (field?: string) => FIELD_LABELS[field ?? ''] ?? 'el campo'
@@ -61,6 +72,8 @@ function translate(error: BackendError): string {
       return `${label(field)} debe tener al menos ${meta?.min} caracteres.`
     case 'maxLength':
       return `${label(field)} no puede superar los ${meta?.max} caracteres.`
+    case 'date':
+      return 'Introduce una fecha válida.'
     default:
       return `Revisa ${label(field)}.`
   }
@@ -102,7 +115,7 @@ function toApiError(status: number, body: unknown): ApiError {
 }
 
 type RequestOptions = {
-  method?: 'GET' | 'POST'
+  method?: 'GET' | 'POST' | 'PATCH'
   body?: unknown
   token?: string | null
 }
@@ -163,4 +176,39 @@ export function logout(token: string): Promise<void> {
   return request('/api/v1/account/logout', { method: 'POST', token }).then(
     () => undefined,
   )
+}
+
+export function listTasks(token: string): Promise<Task[]> {
+  return request<{ data: Task[] }>('/api/v1/tasks', { token }).then(
+    (response) => response.data,
+  )
+}
+
+export function createTask(
+  payload: CreateTaskPayload,
+  token: string,
+): Promise<Task> {
+  return request<{ data: Task }>('/api/v1/tasks', {
+    method: 'POST',
+    body: payload,
+    token,
+  }).then((response) => response.data)
+}
+
+export function getTask(id: number, token: string): Promise<TaskDetail> {
+  return request<{ data: TaskDetail }>(`/api/v1/tasks/${id}`, { token }).then(
+    (response) => response.data,
+  )
+}
+
+export function updateTask(
+  id: number,
+  payload: UpdateTaskPayload,
+  token: string,
+): Promise<TaskDetail> {
+  return request<{ data: TaskDetail }>(`/api/v1/tasks/${id}`, {
+    method: 'PATCH',
+    body: payload,
+    token,
+  }).then((response) => response.data)
 }
