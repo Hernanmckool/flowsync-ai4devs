@@ -24,3 +24,8 @@ coverage/
 .DS_Store
 .vscode/
 .idea/
+
+# Local AI/editor tooling
+.claude/
+.cursor/
+.opencode/
