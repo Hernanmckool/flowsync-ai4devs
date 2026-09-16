@@ -28,13 +28,15 @@ Las reglas de negocio de esta capability —qué title es válido, qué puede ha
 
 Como mapa de qué hay dentro, sin repetir el contenido, los 32 requirements de la spec se agrupan así:
 
-- **Crear una tarea** — título como único dato admitido, validación de vacío/solo-espacios/demasiado largo.
-- **La lista compartida** — qué ve todo el mundo por defecto, orden, y qué trae de cada responsable (nombre e iniciales, nunca el email).
-- **Estado** — los tres valores fijos y quién puede cambiarlos.
-- **Fecha de vencimiento** — cómo se fija, cambia y retira; cómo se decide si una tarea está vencida y contra qué día de referencia.
-- **Filtro por estado** — el parámetro `status` de la lista, sus tres caminos (estado válido, sin resultados, estado inventado) y su control en la interfaz.
+- **Crear una tarea** — qué datos admite la creación y cómo se valida el título.
+- **La lista compartida** — a quién ve por defecto, su orden, y qué expone de cada responsable.
+- **Estado** — los valores del dominio y quién puede cambiarlos.
+- **Fecha de vencimiento** — cómo se fija, cambia y retira, y cómo se decide si una tarea está vencida.
+- **Filtro por estado** — el parámetro `status` de la lista y su control en la interfaz.
 - **Sesión** — qué exige cada operación y qué pasa sin ella.
-- **Interfaz** — las pantallas de lista y de tarea, sus vacíos, y qué no se muestra nunca (vencimiento en la lista, señales de presencia, una vista de «mis tareas»).
+- **Interfaz** — las pantallas de lista y de tarea, y sus distintos vacíos.
+
+Para el detalle de cada caso —incluidos los caminos que hoy no tienen test (ver más abajo)— la spec es el único sitio a mirar.
 
 ## Cómo se prueba en local
 
@@ -52,11 +54,11 @@ npm run dev                                     # http://localhost:3333
 
 ```bash
 cd backend
-npm test                       # toda la suite
-node ace test --files=assignee # solo los tests de tasks
+npm test                         # toda la suite
+node ace test --files=tasks/     # solo los tests de tasks
 ```
 
-Hoy la única suite de `tasks` es `backend/tests/functional/tasks/assignee.spec.ts`, que cubre los tres scenarios del requirement *«Lo que cada tarea muestra de su responsable»*. El resto de los 32 requirements de la spec no tiene todavía test de integración — si vas a tocar creación, listado, filtro, estado o fecha de vencimiento, no hay red por debajo salvo la que escribas.
+Hoy `backend/tests/functional/tasks/` cubre dos requirements: *«Lo que cada tarea muestra de su responsable»* (`assignee.spec.ts`) y *«Un estado que no existe se rechaza, no se responde vacío»* (`list_status_filter.spec.ts`). El resto de los 32 requirements de la spec no tiene todavía test de integración — si vas a tocar creación, el resto del listado, estado o fecha de vencimiento, no hay red por debajo salvo la que escribas.
 
 ### A mano, por HTTP
 

@@ -5,7 +5,8 @@ export default defineConfig({
   document: {
     info: {
       title: 'FlowSync API',
-      // Refleja la versión real de package.json en vez del 1.0.0 de plantilla.
+      // Copiada a mano de la de package.json (no hay lectura automática):
+      // si esa versión cambia, esta hay que actualizarla aparte.
       version: '0.0.0',
     },
     components: {
